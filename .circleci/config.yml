@@ -83,4 +83,4 @@ workflows:
             - tests-n-build-starwarscharacters
       - deploy-images-on-aws:
           requires:
-            - build-docker-images
+            - build-docker-image
