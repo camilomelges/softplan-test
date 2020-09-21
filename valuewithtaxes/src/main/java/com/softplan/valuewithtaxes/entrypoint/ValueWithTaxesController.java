@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 @RestController
 @RequestMapping("/valueWithTaxes")
 public class ValueWithTaxesController {
@@ -22,6 +26,8 @@ public class ValueWithTaxesController {
             throw new ResponseException("Amount cannot be null");
         }
 
-        return ResponseDTO.builder().valueWithTaxes(requestDTO.getTax() * requestDTO.getAmount()).build();
+        Double valueWithTaxes = requestDTO.getAmount() + (requestDTO.getAmount() * (requestDTO.getTax() / 100));
+
+        return ResponseDTO.builder().valueWithTaxes(valueWithTaxes).build();
     }
 }

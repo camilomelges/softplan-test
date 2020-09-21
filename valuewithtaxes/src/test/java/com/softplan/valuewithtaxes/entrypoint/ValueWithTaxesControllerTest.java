@@ -14,6 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith({SpringExtension.class})
@@ -57,8 +60,9 @@ class ValueWithTaxesControllerTest {
         HttpEntity<RequestDTO> httpEntity = new HttpEntity<>(requestDTO);
 
         ResponseEntity<ResponseDTO> result = testRestTemplate.exchange(getRequestURL(), HttpMethod.POST, httpEntity, ResponseDTO.class);
+        Double valueWithTaxes = requestDTO.getAmount() + (requestDTO.getAmount() * (requestDTO.getTax() / 100));
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
-        assertEquals(requestDTO.getTax() * requestDTO.getAmount(), result.getBody().getValueWithTaxes());
+        assertEquals(valueWithTaxes, result.getBody().getValueWithTaxes());
     }
 }
