@@ -78,7 +78,6 @@ workflows:
       - tests-n-build-starwarscharacters
       - build-docker-images:
           requires:
-            - tests-n-build-disknfiles
             - tests-n-build-valuewithtaxes
             - tests-n-build-starwarscharacters
       - deploy-images-on-aws:
