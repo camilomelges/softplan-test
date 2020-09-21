@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -16,5 +16,5 @@ public class ResponseSwapiDTO {
     private Integer count;
     private Integer next;
     private Integer previous;
-    private Set<StarWarsCharacterDTO> results = new HashSet<>();
+    private List<StarWarsCharacterDTO> results = new ArrayList<>();
 }

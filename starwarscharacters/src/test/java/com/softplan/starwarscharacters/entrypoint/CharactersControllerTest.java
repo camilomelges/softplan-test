@@ -49,6 +49,20 @@ class CharactersControllerTest {
     }
 
     @Test
+    public void shouldBeReturnStatus500IfPassParamEmpty() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(getRequestURL()).queryParam("search", "");
+
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<StarWarsCharacterDTO> result = testRestTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, StarWarsCharacterDTO.class);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
+    }
+
+    @Test
     public void shouldBeReturnStatus200IfPassParamSearch() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
@@ -60,5 +74,6 @@ class CharactersControllerTest {
         ResponseEntity<StarWarsCharacterDTO> result = testRestTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, StarWarsCharacterDTO.class);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals("Anakin Skywalker", result.getBody().getName());
     }
 }
