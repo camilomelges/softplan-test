@@ -2,7 +2,7 @@ version: 2
 
 disknfiles: &disknfiles
   docker:
-    - image: circleci/openjdk:9-jdk-buster
+    - image: circleci/openjdk:9
   working_directory: ~/app
   command: cd disknfiles
 
