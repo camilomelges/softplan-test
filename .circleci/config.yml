@@ -1,0 +1,86 @@
+version: 2
+
+disknfiles: &disknfiles
+  docker:
+    - image: circleci/openjdk:8-jdk-buster
+  working_directory: ~/app
+  command: cd disknfiles
+
+valuewithtaxes: &valuewithtaxes
+  docker:
+    - image: circleci/openjdk:14-jdk-buster
+  working_directory: ~/app
+  command: cd valuewithtaxes
+
+starwarscharacters: &starwarscharacters
+  docker:
+    - image: circleci/openjdk:14-jdk-buster
+  working_directory: ~/app
+  command: cd starwarscharacters
+
+jobs:
+  tests-n-build-disknfiles:
+    <<: *disknfiles
+    steps:
+      - checkout
+      - run: cd disknfiles && mvn test
+      - run: cd disknfiles && mvn package
+  
+  tests-n-build-valuewithtaxes:
+    <<: *valuewithtaxes
+    steps:
+      - checkout
+      - run: cd valuewithtaxes && mvn test
+      - run: cd valuewithtaxes && mvn package
+
+  tests-n-build-starwarscharacters:
+    <<: *starwarscharacters
+    steps:
+      - checkout
+      - run: cd starwarscharacters && mvn test
+      - run: cd starwarscharacters && mvn package
+
+  build-docker-images:
+    machine: true
+    steps:
+      - checkout
+      - run: 
+          name: "Login on docker-hub"
+          command: "docker login -u $DOCKER_USERNAME -p $DOCKER_PASS"
+      - run: 
+          name: "Build Value With Taxes image"
+          command: "cd valuewithtaxes && docker build -t rafamilo/sp-valuewithtaxes . && docker push rafamilo/sp-valuewithtaxes"
+      - run: 
+          name: "Build Star Wars Characters"
+          command: "cd starwarscharacters && docker build -t rafamilo/sp-starwarscharacters . && docker push rafamilo/sp-starwarscharacters"
+
+  deploy-images-on-aws:
+    machine: true
+    steps:
+      - checkout
+      - run: 
+          name: "Login on docker-hub"
+          command: "docker login -u $DOCKER_USERNAME -p $DOCKER_PASS"
+      - run: 
+          name: "Deploy Value With Taxes"
+          command: ssh $DEPLOY_USER@$DEPLOY_HOST "docker pull rafamilo/sp-valuewithtaxes && (docker rm -f sp-valuewithtaxes || true) && docker run -p 7001:7001 --name sp-valuewithtaxes -d --restart=always rafamilo/sp-valuewithtaxes"
+      - run: 
+          name: "Deploy Star Wars Characters"
+          command: ssh $DEPLOY_USER@$DEPLOY_HOST "docker pull rafamilo/sp-starwarscharacters && (docker rm -f sp-starwarscharacters || true) && docker run -p 7002:7002 --name sp-starwarscharacters -d --restart=always rafamilo/sp-starwarscharacters"
+
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - tests-n-build-disknfiles
+      - tests-n-build-valuewithtaxes
+      - tests-n-build-starwarscharacters
+      - build-docker-images:
+          requires:
+            - tests-n-build-disknfiles
+            - tests-n-build-valuewithtaxes
+            - tests-n-build-starwarscharacters
+      - deploy-images-on-aws:
+          requires:
+            - build-docker-images
