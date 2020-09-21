@@ -2,11 +2,8 @@ package com.rafamilo.usecases;
 
 import com.rafamilo.usecases.exceptions.FileGreaterThanDiskException;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class DiskForFiles implements IDiskForFiles {
 
@@ -47,7 +44,7 @@ public class DiskForFiles implements IDiskForFiles {
             return new FileGreaterThanDiskException().getMessage();
         }
 
-        return qtDisks.toString();
+        return printNReturnString("++++++++++++++++++++++++++++++++++++++++++++++++++++++ " + qtDisks.toString().concat(" DISKS") + " ++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 
     private Integer getQtOfDisks(final Integer diskSize, final List<Integer> files, Integer count) throws FileGreaterThanDiskException {
