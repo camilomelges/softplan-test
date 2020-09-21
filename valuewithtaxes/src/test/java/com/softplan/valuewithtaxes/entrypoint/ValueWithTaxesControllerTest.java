@@ -14,9 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith({SpringExtension.class})
@@ -26,7 +23,6 @@ class ValueWithTaxesControllerTest {
     @LocalServerPort
     private int localServerPort;
     private TestRestTemplate testRestTemplate;
-
     private String getRequestURL() {
         return "http://localhost:" + localServerPort + "/valueWithTaxes";
     }
