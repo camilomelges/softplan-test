@@ -10,3 +10,6 @@
  
 # How to test end-point
  - Run ```curl --location --request GET 'http://localhost:7002/characters?search=anakin'```
+
+# How to test end-point in production
+ - Run ```curl --location --request GET 'http://35.165.106.212:7002/characters?search=anakin'```
