@@ -49,15 +49,16 @@ public class DiskForFiles implements IDiskForFiles {
 
     private Integer getQtOfDisks(final Integer diskSize, final List<Integer> files, Integer count) throws FileGreaterThanDiskException {
         List<Integer> newFiles = new ArrayList<>();
-        final Integer[] sum = {0};
+        final Integer[] aux = {0, 0};
 
         files.stream().forEach(fileSize -> {
             if (fileSize > diskSize) {
                 throw new FileGreaterThanDiskException();
             }
 
-            if ((sum[0] + fileSize) <= diskSize) {
-                sum[0] += fileSize;
+            if (aux[1] < 2 && ((aux[0] + fileSize) <= diskSize)) {
+                aux[0] += fileSize;
+                ++aux[1];
             } else {
                 newFiles.add(fileSize);
             }
