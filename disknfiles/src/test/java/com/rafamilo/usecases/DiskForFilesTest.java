@@ -45,7 +45,7 @@ public class DiskForFilesTest {
     @Test
     public void shouldBeReturnTwo() {
         String[] args = {"100", "20", "30", "50", "10", "15"};
-        Assert.assertEquals("++++++++++++++++++++++++++++++++++++++++++++++++++++++ 2 DISKS ++++++++++++++++++++++++++++++++++++++++++++++++++++++", diskForFiles.run(args));
+        Assert.assertEquals("++++++++++++++++++++++++++++++++++++++++++++++++++++++ 3 DISKS ++++++++++++++++++++++++++++++++++++++++++++++++++++++", diskForFiles.run(args));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class DiskForFilesTest {
     @Test
     public void shouldBeReturnThree2() {
         String[] args = {"90", "90", "20", "30", "50", "10", "15"};
-        Assert.assertEquals("++++++++++++++++++++++++++++++++++++++++++++++++++++++ 3 DISKS ++++++++++++++++++++++++++++++++++++++++++++++++++++++", diskForFiles.run(args));
+        Assert.assertEquals("++++++++++++++++++++++++++++++++++++++++++++++++++++++ 4 DISKS ++++++++++++++++++++++++++++++++++++++++++++++++++++++", diskForFiles.run(args));
     }
 
     @Test
@@ -69,6 +69,12 @@ public class DiskForFilesTest {
     @Test
     public void shouldBeReturnSix() {
         String[] args = {"80", "80", "80", "80", "80", "79", "1", "11", "12", "23", "34"};
+        Assert.assertEquals("++++++++++++++++++++++++++++++++++++++++++++++++++++++ 7 DISKS ++++++++++++++++++++++++++++++++++++++++++++++++++++++", diskForFiles.run(args));
+    }
+
+    @Test
+    public void shouldBeReturnSix2() {
+        String[] args = {"100", "90", "50", "30", "30", "10", "50", "8", "85", "6", "95"};
         Assert.assertEquals("++++++++++++++++++++++++++++++++++++++++++++++++++++++ 6 DISKS ++++++++++++++++++++++++++++++++++++++++++++++++++++++", diskForFiles.run(args));
     }
 }
